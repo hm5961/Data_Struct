@@ -10,7 +10,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-/* ?„ìš”?? ?¤ë”?Œì¼ ì¶”ê? */
 
 typedef struct Node {
 	int key;
@@ -22,7 +21,6 @@ typedef struct Head {
 }headNode;
 
 
-/* ?¨ìˆ˜ ë¦¬ìŠ¤?? */
 headNode* initialize(headNode* h);
 int freeList(headNode* h);
 
@@ -108,20 +106,15 @@ int main()
 
 headNode* initialize(headNode* h) {
 
-	/* headNodeê°? NULL?? ?„ë‹ˆë©?, freeNodeë¥? ?¸ì¶œ?˜ì—¬ ? ë‹¹?? ë©”ëª¨ë¦? ëª¨ë‘ ?´ì œ */
 	if(h != NULL)
 		freeList(h);
 
-	/* headNode?? ???? ë©”ëª¨ë¦¬ë? ? ë‹¹?˜ì—¬ ë¦¬í„´ */
 	headNode* temp = (headNode*)malloc(sizeof(headNode));
 	temp->first = NULL;
 	return temp;
 }
 
 int freeList(headNode* h){
-	/* h?? ?°ê²°?? listNode ë©”ëª¨ë¦? ?´ì œ
-	 * headNode?? ?´ì œ?˜ì–´?? ??.
-	 */
 	listNode* p = h->first;
 
 	listNode* prev = NULL;
@@ -135,10 +128,6 @@ int freeList(headNode* h){
 }
 
 
-
-/**
- * list ì²˜ìŒ?? key?? ???? ?¸ë“œ?˜ë‚˜ë¥? ì¶”ê?
- */
 int insertFirst(headNode* h, int key) {
 
 	listNode* node = (listNode*)malloc(sizeof(listNode));
@@ -151,24 +140,17 @@ int insertFirst(headNode* h, int key) {
 }
 
 
-/* ë¦¬ìŠ¤?¸ë? ê²??‰í•˜??, ?…ë ¥ë°›ì? keyë³´ë‹¤ ?°ê°’?? ?˜ì˜¤?? ?¸ë“œ ë°”ë¡œ ?ì— ?½ì… */
 int insertNode(headNode* h, int key) {
 
 	return 0;
 }
 
-/**
- * list?? key?? ???? ?¸ë“œ?˜ë‚˜ë¥? ì¶”ê?
- */
 int insertLast(headNode* h, int key) {
 
 	return 0;
 }
 
 
-/**
- * list?? ì²«ë²ˆì§? ?¸ë“œ ?? œ
- */
 int deleteFirst(headNode* h) {
 
 
@@ -176,27 +158,18 @@ int deleteFirst(headNode* h) {
 }
 
 
-/**
- * list?ì„œ key?? ???? ?¸ë“œ ?? œ
- */
 int deleteNode(headNode* h, int key) {
 
 	return 0;
 
 }
 
-/**
- * list?? ë§ˆì?ë§? ?¸ë“œ ?? œ
- */
 int deleteLast(headNode* h) {
 
 	return 0;
 }
 
 
-/**
- * ë¦¬ìŠ¤?¸ì˜ ë§í¬ë¥? ??ˆœ?¼ë¡œ ?? ë°°ì¹˜
- */
 int invertList(headNode* h) {
 
 	return 0;
@@ -224,4 +197,3 @@ void printList(headNode* h) {
 
 	printf("  items = %d\n", i);
 }
-
