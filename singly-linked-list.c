@@ -289,7 +289,7 @@ int deleteLast(headNode* h) {
 		n = n->link;
 		i++;
 	}
-	for(j=1; j>i; j++)
+	for(j=1; j<i; j++)
 	{
 		m = m->link;
 	}
