@@ -42,6 +42,7 @@ int main()
 	int key;
 	listNode* headnode=NULL;
 
+	printf("[----- [김현민] [2018038036] -----]");
 	do{
 		printf("----------------------------------------------------------------\n");
 		printf("                  Doubly Circular Linked List                   \n");
@@ -171,6 +172,27 @@ void printList(listNode* h) {
  */
 int insertLast(listNode* h, int key) {
 
+	listNode* node = (listNode*)malloc(sizeof(listNode));
+	node->key = key;
+	listNode* n;
+
+	if( h == NULL )
+	{
+		h = node;
+		free(node);
+		return 0;
+	}
+	else
+	{
+		n = h->llink;
+		
+		node->rlink = h;
+		n->rlink = node;
+		node->llink = n;
+		h->llink = node;
+		return 0;
+	}
+	
 	return 1;
 }
 
@@ -180,7 +202,28 @@ int insertLast(listNode* h, int key) {
  */
 int deleteLast(listNode* h) {
 
-
+	listNode* n;
+	
+	if( h == NULL )
+	{
+		printf("unavailable. node is empty");
+		return 0;
+	}
+	else
+	{
+		n = h->llink;
+		
+		n->llink->rlink = h;
+		h->llink = n->llink;
+		free(n);
+		/*
+		n->llink = h->llink;
+		h->llink = n;
+		free(n->llink);
+		return 0;
+		*/
+	}
+	
 	return 1;
 }
 
@@ -190,6 +233,26 @@ int deleteLast(listNode* h) {
  */
 int insertFirst(listNode* h, int key) {
 
+	listNode* node = (listNode*)malloc(sizeof(listNode));
+	node->key = key;
+	listNode* n;
+
+	if( h == NULL )
+	{
+		h = node;
+		free(node);
+		return 0;
+	}
+	else
+	{
+		n = h->rlink;
+		
+		node->rlink = n;
+		h->rlink = node;
+		n->llink = node;
+		node->llink = h;
+		return 0;
+	}
 
 	return 1;
 }
@@ -199,6 +262,22 @@ int insertFirst(listNode* h, int key) {
  */
 int deleteFirst(listNode* h) {
 
+	listNode* n;
+	
+	if( h == NULL )
+	{
+		printf("unavailable. node is empty");
+		return 0;
+	}
+	else
+	{
+		n = h->rlink;
+		
+		h->rlink = n->rlink;
+		n->rlink->llink = h;
+		free(n);
+		return 0;
+	}
 
 	return 1;
 
@@ -210,7 +289,28 @@ int deleteFirst(listNode* h) {
  */
 int invertList(listNode* h) {
 
+	listNode *node; // Node 삭제 중간 연산용
+	listNode *n; // Node 삭제 중간 연산용
+	listNode *m; // Node 삭제 중간 연산용
+	
+	if( h->rlink != NULL )
+	{
+		node = h; // 탐색용 node 초기값 지정 
+		m = NULL; // 연산용 node 초기화 
+	
+		while(node != NULL)
+			{
+				n = m;
+				m = node;
+				node = node->rlink;
+				m->rlink = n;
+				if(n != NULL)
+					n->llink = m; 
+			}
 
+			h = m;
+			return 0;
+	}
 	return 0;
 }
 
@@ -221,6 +321,39 @@ int invertList(listNode* h) {
  **/
 int insertNode(listNode* h, int key) {
 
+	listNode* node = (listNode*)malloc(sizeof(listNode));
+	node->key = key;
+	listNode* n;
+
+	if( h == NULL )
+	{
+		printf("There is no equal value\n");
+		free(node);
+		return 0;
+	}
+	else
+	{
+		n = h->rlink;
+		
+		while( n->rlink != h || n->key <= node->key )
+		{
+			n = n->rlink;
+		}
+		if( n->key > node->key )
+		{	
+			node->rlink = n;
+			n->llink->rlink = node;
+			node->llink = n->llink;
+			n->llink = node;
+			return 0;
+		}		
+		else if( n->rlink == h )
+		{
+			printf("There is no equal value\n");
+			free(node);
+			return 0;
+		}
+	}
 	return 0;
 }
 
@@ -229,6 +362,58 @@ int insertNode(listNode* h, int key) {
  * list에서 key에 대한 노드 삭제
  */
 int deleteNode(listNode* h, int key) {
+
+	listNode* node = (listNode*)malloc(sizeof(listNode));
+	node->key = key;
+	listNode* n;
+
+	if( h == NULL )
+	{
+		printf("There is no equal value\n");
+		free(node);
+		return 0;
+	}
+	else
+	{
+		n = h->rlink;
+		
+		while( n->rlink != h || n->key <= node->key )
+		{
+			n = n->rlink;
+		}
+		if( n->key > node->key )
+		{	
+			node->rlink = n;
+			n->llink->rlink = node;
+			node->llink = n->llink;
+			n->llink = node;
+			return 0;
+		}		
+		else if( n->rlink == h )
+		{
+			printf("There is no equal value\n");
+			free(node);
+			return 0;
+		}
+	}
+	listNode* n;
+	
+	if( h == NULL )
+	{
+		printf("unavailable. node is empty");
+		return 0;
+	}
+	else
+	{
+		n = h->rlink;
+		
+		h->rlink = n->rlink;
+		n->rlink->llink = h;
+		free(n);
+		return 0;
+	}
+
+	return 1;
 
 	return 0;
 }
