@@ -18,10 +18,10 @@ typedef struct Node {
 	int key;
 	struct Node* llink;
 	struct Node* rlink;
-} listNode;
+} listNode; // 이중연결원형리스트로 사용 할 구조체 선언 
 
 /* 함수 리스트 */
-int initialize(listNode** h);
+int initialize(listNode** h); // 구조체 h를 이중연결원형리스트로 사용하기 위해 동적 할당 
 int freeList(listNode* h);
 int insertLast(listNode* h, int key);
 int deleteLast(listNode* h);
@@ -175,25 +175,15 @@ int insertLast(listNode* h, int key) {
 	listNode* node = (listNode*)malloc(sizeof(listNode));
 	node->key = key;
 	listNode* n;
-
-	if( h == NULL )
-	{
-		h = node;
-		free(node);
-		return 0;
-	}
-	else
-	{
-		n = h->llink;
-		
-		node->rlink = h;
-		n->rlink = node;
-		node->llink = n;
-		h->llink = node;
-		return 0;
-	}
 	
-	return 1;
+	n = h->llink;
+		
+	node->rlink = h;
+	n->rlink = node;
+	node->llink = n;
+	h->llink = node;
+	return 0;
+
 }
 
 
@@ -204,9 +194,9 @@ int deleteLast(listNode* h) {
 
 	listNode* n;
 	
-	if( h == NULL )
+	if( h->rlink->llink == h )
 	{
-		printf("unavailable. node is empty");
+		printf("unavailable. node is empty\n");
 		return 0;
 	}
 	else
@@ -224,7 +214,7 @@ int deleteLast(listNode* h) {
 		*/
 	}
 	
-	return 1;
+	return 0;
 }
 
 
@@ -237,24 +227,13 @@ int insertFirst(listNode* h, int key) {
 	node->key = key;
 	listNode* n;
 
-	if( h == NULL )
-	{
-		h = node;
-		free(node);
-		return 0;
-	}
-	else
-	{
-		n = h->rlink;
-		
-		node->rlink = n;
-		h->rlink = node;
-		n->llink = node;
-		node->llink = h;
-		return 0;
-	}
-
-	return 1;
+	n = h->rlink;
+	
+	node->rlink = n;
+	h->rlink = node;
+	n->llink = node;
+	node->llink = h;
+	return 0;
 }
 
 /**
@@ -264,9 +243,9 @@ int deleteFirst(listNode* h) {
 
 	listNode* n;
 	
-	if( h == NULL )
+	if( h->rlink->llink == h )
 	{
-		printf("unavailable. node is empty");
+		printf("unavailable. node is empty\n");
 		return 0;
 	}
 	else
@@ -279,7 +258,7 @@ int deleteFirst(listNode* h) {
 		return 0;
 	}
 
-	return 1;
+	return 0;
 
 }
 
@@ -322,39 +301,38 @@ int invertList(listNode* h) {
 int insertNode(listNode* h, int key) {
 
 	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
 	listNode* n;
-
-	if( h == NULL )
+	
+	if( h == h->llink  )
 	{
 		printf("There is no equal value\n");
 		free(node);
 		return 0;
 	}
-	else
-	{
-		n = h->rlink;
+	
+	
+	node = h->rlink;
+	node->key = key;
+	n = h->rlink;
 		
-		while( n->rlink != h || n->key <= node->key )
-		{
-			n = n->rlink;
-		}
-		if( n->key > node->key )
-		{	
-			node->rlink = n;
-			n->llink->rlink = node;
-			node->llink = n->llink;
-			n->llink = node;
-			return 0;
-		}		
-		else if( n->rlink == h )
-		{
-			printf("There is no equal value\n");
-			free(node);
-			return 0;
-		}
+	while( n->rlink != h || n->key <= node->key )
+	{
+		n = n->rlink;
 	}
-	return 0;
+	if( n->key > node->key )
+	{	
+		node->rlink = n;
+		n->llink->rlink = node;
+		node->llink = n->llink;
+		n->llink = node;
+		return 0;
+	}		
+	else if( n->rlink == h )
+	{
+		printf("There is no equal value\n");
+		free(node);
+		return 0;
+	}
 }
 
 
@@ -363,58 +341,38 @@ int insertNode(listNode* h, int key) {
  */
 int deleteNode(listNode* h, int key) {
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
+	
 	listNode* n;
-
-	if( h == NULL )
+	n = h->rlink;
+	n->key = key;
+	
+	if( h->rlink->llink == h )
 	{
-		printf("There is no equal value\n");
-		free(node);
+		printf("unavailable. node is empty\n");
 		return 0;
 	}
 	else
 	{
-		n = h->rlink;
 		
-		while( n->rlink != h || n->key <= node->key )
+		while( n->rlink != h || n->key != key )
 		{
 			n = n->rlink;
 		}
-		if( n->key > node->key )
+		if( n->key == key )
 		{	
-			node->rlink = n;
-			n->llink->rlink = node;
-			node->llink = n->llink;
-			n->llink = node;
+			n->llink->rlink = n->rlink;
+			n->rlink->llink = n->llink;
+			free(n);
+			
 			return 0;
 		}		
 		else if( n->rlink == h )
 		{
 			printf("There is no equal value\n");
-			free(node);
 			return 0;
 		}
 	}
-	listNode* n;
 	
-	if( h == NULL )
-	{
-		printf("unavailable. node is empty");
-		return 0;
-	}
-	else
-	{
-		n = h->rlink;
-		
-		h->rlink = n->rlink;
-		n->rlink->llink = h;
-		free(n);
-		return 0;
-	}
-
-	return 1;
-
 	return 0;
 }
 
