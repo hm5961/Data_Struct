@@ -22,14 +22,14 @@ typedef struct Node {
 
 /* 함수 리스트 */
 int initialize(listNode** h); // 구조체 h를 이중연결원형리스트로 사용하기 위해 동적 할당 
-int freeList(listNode* h);
-int insertLast(listNode* h, int key);
-int deleteLast(listNode* h);
-int insertFirst(listNode* h, int key);
-int deleteFirst(listNode* h);
-int invertList(listNode* h);
+int freeList(listNode* h); //프로그램 종료 전 동적 할당 해제 
+int insertLast(listNode* h, int key); // 입력받은 key값을 가진 node를 리스트의 마지막 위치에 해당하는(h->llist)에 삽입한다. 
+int deleteLast(listNode* h); // 리스트의 마지막 위치에 해당하는(h->llist)에 있는 노드를 삭제한다.
+int insertFirst(listNode* h, int key); // 입력받은 key값을 가진 node를 리스트의 처음 위치에 해당하는(h->rlist)에 삽입한다. 
+int deleteFirst(listNode* h); // 리스트의 처음 위치에 해당하는(h->rlist)에 있는 노드를 삭제한다.
+int invertList(listNode* h); // 리스트를 역순으로 뒤집는다. 
 
-int insertNode(listNode* h, int key);
+int insertNode(listNode* h, int key); 
 int deleteNode(listNode* h, int key);
 
 void printList(listNode* h);
@@ -38,9 +38,9 @@ void printList(listNode* h);
 
 int main()
 {
-	char command;
-	int key;
-	listNode* headnode=NULL;
+	char command; // 사용자로부터 메뉴를 입력받을 션수 선언 
+	int key; // key값 입력받을 변수 
+	listNode* headnode=NULL; // 함수로 넘겨줄 headnode 선언 후 초기화  
 
 	printf("[----- [김현민] [2018038036] -----]");
 	do{
@@ -57,7 +57,7 @@ int main()
 		printf("Command = ");
 		scanf(" %c", &command);
 
-		switch(command) {
+		switch(command) { // 입력받을 문자를 통해 조건에 맞는 함수 사용 
 		case 'z': case 'Z':
 			initialize(&headnode);
 			break;
@@ -101,7 +101,7 @@ int main()
 			break;
 		}
 
-	}while(command != 'q' && command != 'Q');
+	}while(command != 'q' && command != 'Q'); //q를 받을 때 까지 루프 반복 
 
 	return 1;
 }
@@ -117,30 +117,41 @@ int initialize(listNode** h) {
 	*h = (listNode*)malloc(sizeof(listNode));
 	(*h)->rlink = *h;
 	(*h)->llink = *h;
-	(*h)->key = -9999;
+	(*h)->key = -9999; 
 	return 1;
 }
 
 /* 메모리 해제 */
 int freeList(listNode* h){
 
+	listNode* n = h->rlink; // 순차적으로 넘어갈 연산용 노드 
+	listNode* m = NULL; // 노드 초기화 전 중간 저장용 노드 
+	
+	while(n != h) // while이 h가 될 때 까지 n으로 다음 노드를 검색하며, m으로 임시 저장 후 할당 해제 
+	{
+		m = n; 
+		n = n->rlink;
+		free(m);
+	}
+	free(h); // 헤드노드도 동적 할당 해제 
+	
 	return 0;
 }
 
 
 
 void printList(listNode* h) {
-	int i = 0;
-	listNode* p;
+	int i = 0; // 노드 수 카운트용 변수 
+	listNode* p; 
 
 	printf("\n---PRINT\n");
 
-	if(h == NULL) {
+	if(h == NULL) { // h가 동적할당 후 초기화 되지 않았으면 아래 출력 
 		printf("Nothing to print....\n");
 		return;
 	}
 
-	p = h->rlink;
+	p = h->rlink; // 순차적으로 넘어갈 연산용 노드 
 
 	while(p != NULL && p != h) {
 		printf("[ [%d]=%d ] ", i, p->key);
