@@ -316,12 +316,10 @@ int insertNode(listNode* h, int key) {
 		return 0;
 	}
 	
-	
-	node = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분 
 	node->key = key; // 인풋받은 키 저장 
 	n = h->rlink;  // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분 
 	
-	while( n->rlink != h || n->key <= node->key ) // n의 다음 노드가 헤드노드거나 n의 키값이 노드보다 클 때 까지 n으로 탐색 
+	while( n->rlink != h && n->key <= node->key ) // n의 다음 노드가 헤드노드면서 n의 키값이 노드보다 클 때 까지 n으로 탐색 
 	{                                             
 		n = n->rlink;
 	}             
@@ -350,31 +348,29 @@ int deleteNode(listNode* h, int key) {
 
 	
 	listNode* n; // 삭제할 대상이 될 노드 
-	n = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분
-	n->key = key; // 인풋받은 키 저장 
 	
-	if( h->rlink->llink == h )
+	if( h->rlink == h )
 	{
 		printf("unavailable. node is empty\n");
 		return 0;
 	}
 	else
 	{
-		
-		while( n->rlink != h || n->key != key ) // n의 다음 노드가 헤드노드거나 n의 키값이 인풋된 키와 같을 때 까지 n으로 탐색
+		n = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분
+		while( n->rlink != h && n->key != key ) // n의 다음 노드가 헤드노드면서 n의 키값이 인풋된 키와 같을 때 까지 n으로 탐색
 		{
-			n = n->rlink;
+			n = m->rlink;
 		}
 		if( n->key == key ) // n의 키 값이 인풋받은 키값과 같으면 
 		{	
 			// n->llink와 n->rlink가 서로 링크하고 n 동적 할당 해제 
 			n->llink->rlink = n->rlink;
-			n->rlink->llink = n->llink;
+			n->llink->rlink->llink = n->llink;
 			free(n);
 			
 			return 0;
 		}		
-		else if( n->rlink == h ) // 위의 key값 조건을 미 충족하면 리턴 0 
+		else // 그 외의 경우는 리턴 0 
 		{
 			printf("There is no equal value\n");
 			return 0;
