@@ -283,13 +283,14 @@ int invertList(listNode* h) {
 		node = h; // 탐색용 node 초기 위치 지정 
 		m = NULL; // 연산용 node 초기화 
 	
-		while(node != NULL )
+		while( node != NULL ) // node가 NULL이 될 때 까지 반복 
 			{
+				// swap(a,b)기반 temp = a, a = b, b = temp 형으로 작동 
 				n = m;
 				m = node;
-				node = node->rlink;
+				node = node->rlink; // node가 탐색 
 				m->rlink = n;
-				if(n != NULL)
+				if(n != NULL) // 초기 n = NULL연산이 있기에 조건문 사용 
 					n->llink = m; 
 			}
 
@@ -305,34 +306,35 @@ int invertList(listNode* h) {
  **/
 int insertNode(listNode* h, int key) {
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	listNode* n;
+	listNode* node = (listNode*)malloc(sizeof(listNode)); // 삽입할 새로운 노드 동적 할당 
+	listNode* n; // 중간 연산으로 위치를 저장할 노드 
 	
-	if( h->rlink == h ) // 리스트에 헤드노드 밖에 없다면 
+	if( h->rlink == h ) // 리스트에 헤드노드 밖에 없다면 연산하지 않고 리턴 0 
 	{
 		printf("There is no equal value\n");
-		free(node);
+		free(node); // 함수내에서 할당한 노드 동적 할당 해제 
 		return 0;
 	}
 	
 	
-	node = h->rlink;
-	node->key = key;
-	n = h->rlink;
-		
-	while( n->rlink != h || n->key <= node->key )
-	{
+	node = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분 
+	node->key = key; // 인풋받은 키 저장 
+	n = h->rlink;  // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분 
+	
+	while( n->rlink != h || n->key <= node->key ) // n의 다음 노드가 헤드노드거나 n의 키값이 노드보다 클 때 까지 n으로 탐색 
+	{                                             
 		n = n->rlink;
-	}
-	if( n->key > node->key )
+	}             
+	if( n->key > node->key ) // n의 key값이 node의 key값보다 크면 
 	{	
-		node->rlink = n;
+		// n과 n->llink 사이에 node 삽입 
+		node->rlink = n; 
 		n->llink->rlink = node;
 		node->llink = n->llink;
 		n->llink = node;
 		return 0;
 	}		
-	else if( n->rlink == h )
+	else if( n->rlink == h ) // key값 조건을 미 충족하고 리스트를 다 탐색 한 경우 node 할당 해제 후 리턴 0 
 	{
 		printf("There is no equal value\n");
 		free(node);
@@ -347,9 +349,9 @@ int insertNode(listNode* h, int key) {
 int deleteNode(listNode* h, int key) {
 
 	
-	listNode* n;
-	n = h->rlink;
-	n->key = key;
+	listNode* n; // 삭제할 대상이 될 노드 
+	n = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분
+	n->key = key; // 인풋받은 키 저장 
 	
 	if( h->rlink->llink == h )
 	{
@@ -359,19 +361,20 @@ int deleteNode(listNode* h, int key) {
 	else
 	{
 		
-		while( n->rlink != h || n->key != key )
+		while( n->rlink != h || n->key != key ) // n의 다음 노드가 헤드노드거나 n의 키값이 인풋된 키와 같을 때 까지 n으로 탐색
 		{
 			n = n->rlink;
 		}
-		if( n->key == key )
+		if( n->key == key ) // n의 키 값이 인풋받은 키값과 같으면 
 		{	
+			// n->llink와 n->rlink가 서로 링크하고 n 동적 할당 해제 
 			n->llink->rlink = n->rlink;
 			n->rlink->llink = n->llink;
 			free(n);
 			
 			return 0;
 		}		
-		else if( n->rlink == h )
+		else if( n->rlink == h ) // 위의 key값 조건을 미 충족하면 리턴 0 
 		{
 			printf("There is no equal value\n");
 			return 0;
