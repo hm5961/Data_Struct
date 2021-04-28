@@ -42,7 +42,7 @@ int main()
 	int key; // key값 입력받을 변수 
 	listNode* headnode=NULL; // 함수로 넘겨줄 headnode 선언 후 초기화  
 
-	printf("[----- [김현민] [2018038036] -----]");
+	printf("[----- [김현민] [2018038036] -----]\n");
 	do{
 		printf("----------------------------------------------------------------\n");
 		printf("                  Doubly Circular Linked List                   \n");
