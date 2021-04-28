@@ -153,25 +153,25 @@ void printList(listNode* h) {
 
 	p = h->rlink; // 순차적으로 넘어갈 연산용 노드 
 
-	while(p != NULL && p != h) {
-		printf("[ [%d]=%d ] ", i, p->key);
-		p = p->rlink;
-		i++;
+	while(p != NULL && p != h) { // p가 NULL이면서 h일 때 까지 반복 
+		printf("[ [%d]=%d ] ", i, p->key); // h로 부터의 순서와 그 때의 key값 출력 
+		p = p->rlink; // p는 다음 노드 탐색 
+		i++; // 카운트 +1 
 	}
-	printf("  items = %d\n", i);
+	printf("  items = %d\n", i); // 헤드노드를 제외한 노드 수 출력 
 
 
 	/* print addresses */
 	printf("\n---checking addresses of links\n");
 	printf("-------------------------------\n");
-	printf("head node: [llink]=%p, [head]=%p, [rlink]=%p\n", h->llink, h, h->rlink);
+	printf("head node: [llink]=%p, [head]=%p, [rlink]=%p\n", h->llink, h, h->rlink); // 헤드노드의 정보 출력 
 
-	i = 0;
-	p = h->rlink;
-	while(p != NULL && p != h) {
-		printf("[ [%d]=%d ] [llink]=%p, [node]=%p, [rlink]=%p\n", i, p->key, p->llink, p, p->rlink);
-		p = p->rlink;
-		i++;
+	i = 0; // i 초기화 
+	p = h->rlink; // p 초기화 
+	while(p != NULL && p != h) { // p가 NULL이면서 h일 때 까지 반복 
+		printf("[ [%d]=%d ] [llink]=%p, [node]=%p, [rlink]=%p\n", i, p->key, p->llink, p, p->rlink); // h부터 순차적으로 i번째인 노드의 key값과 노드의 llink, rlink, 주소값 출력   
+		p = p->rlink; // 다음 노드로 순차 이동 
+		i++; // 카운트 +1 
 	}
 
 }
@@ -183,13 +183,14 @@ void printList(listNode* h) {
  */
 int insertLast(listNode* h, int key) {
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
-	listNode* n;
+	listNode* node = (listNode*)malloc(sizeof(listNode)); // 삽입할 새로운 노드 동적 할당 
+	node->key = key; // 인풋받은 key를 node에 저장 
+	listNode* n; // 중간 연산으로 위치를 저장할 노드 
 	
-	n = h->llink;
-		
-	node->rlink = h;
+	n = h->llink; // 초기 위치 지정 -> 원형 리스트의 마지막에 해당하는 부분 
+	
+	// 마지막에 해당하는 n과 h사이에 node를 삽입 하기 위해 n-node-h 순서로 링크 정리 
+	node->rlink = h; 
 	n->rlink = node;
 	node->llink = n;
 	h->llink = node;
@@ -203,29 +204,24 @@ int insertLast(listNode* h, int key) {
  */
 int deleteLast(listNode* h) {
 
-	listNode* n;
+	listNode* n; // 삭제할 대상이 될 노드 
 	
-	if( h->rlink->llink == h )
+	if( h->rlink == h ) // 리스트에 헤드노드 밖에 없다면 연산하지 않고 리턴 0 
 	{
 		printf("unavailable. node is empty\n");
 		return 0;
 	}
-	else
+	else // 그 외의 경우는 연산 
 	{
-		n = h->llink;
+		n = h->llink; // 초기 위치 지정 -> 원형 노드의 마지막에 해당하는 부분 
 		
+		// 마지막에 해당하는 n을 삭제하기 위해 n->llink와 h의 링크들을 직접 연결 
 		n->llink->rlink = h;
 		h->llink = n->llink;
-		free(n);
-		/*
-		n->llink = h->llink;
-		h->llink = n;
-		free(n->llink);
+		free(n); // n 동적 할당 해제 
 		return 0;
-		*/
 	}
 	
-	return 0;
 }
 
 
@@ -234,12 +230,13 @@ int deleteLast(listNode* h) {
  */
 int insertFirst(listNode* h, int key) {
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
-	listNode* n;
+	listNode* node = (listNode*)malloc(sizeof(listNode)); // 삽입할 새로운 노드 동적 할당 
+	node->key = key; // 인풋받은 key를 node에 저장 
+	listNode* n; // 중간 연산으로 위치를 저장할 노드 
 
-	n = h->rlink;
+	n = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분 
 	
+	// 처음에 해당하는 n과 h사이에 node를 넣기위해 h-node-n순으로 링크 정리 
 	node->rlink = n;
 	h->rlink = node;
 	n->llink = node;
@@ -252,25 +249,23 @@ int insertFirst(listNode* h, int key) {
  */
 int deleteFirst(listNode* h) {
 
-	listNode* n;
+	listNode* n; // 삭제할 대상이 될 노드 
 	
-	if( h->rlink->llink == h )
+	if( h->rlink == h ) // 리스트에 헤드노드 밖에 없다면 연산하지 않고 리턴 0  
 	{
 		printf("unavailable. node is empty\n");
 		return 0;
 	}
+	
 	else
 	{
-		n = h->rlink;
-		
+		n = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분 
+		// 처음에 해당하는 n을 삭제하기 위해 n->rlink와 h의 링크들을 직접 연결 
 		h->rlink = n->rlink;
 		n->rlink->llink = h;
 		free(n);
 		return 0;
 	}
-
-	return 0;
-
 }
 
 
@@ -279,16 +274,16 @@ int deleteFirst(listNode* h) {
  */
 int invertList(listNode* h) {
 
-	listNode *node; // Node 삭제 중간 연산용
+	listNode *node; // 탐색용 노드 
 	listNode *n; // Node 삭제 중간 연산용
 	listNode *m; // Node 삭제 중간 연산용
 	
-	if( h->rlink != NULL )
+	if( h->rlink != h )
 	{
-		node = h; // 탐색용 node 초기값 지정 
+		node = h; // 탐색용 node 초기 위치 지정 
 		m = NULL; // 연산용 node 초기화 
 	
-		while(node != NULL)
+		while(node != NULL )
 			{
 				n = m;
 				m = node;
@@ -301,7 +296,6 @@ int invertList(listNode* h) {
 			h = m;
 			return 0;
 	}
-	return 0;
 }
 
 
@@ -314,7 +308,7 @@ int insertNode(listNode* h, int key) {
 	listNode* node = (listNode*)malloc(sizeof(listNode));
 	listNode* n;
 	
-	if( h == h->llink  )
+	if( h->rlink == h ) // 리스트에 헤드노드 밖에 없다면 
 	{
 		printf("There is no equal value\n");
 		free(node);
@@ -383,8 +377,6 @@ int deleteNode(listNode* h, int key) {
 			return 0;
 		}
 	}
-	
-	return 0;
 }
 
 
