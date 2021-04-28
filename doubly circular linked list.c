@@ -359,7 +359,7 @@ int deleteNode(listNode* h, int key) {
 		n = h->rlink; // 초기 위치 지정 ->  원형 리스트의 처음에 해당하는 부분
 		while( n->rlink != h && n->key != key ) // n의 다음 노드가 헤드노드면서 n의 키값이 인풋된 키와 같을 때 까지 n으로 탐색
 		{
-			n = m->rlink;
+			n = n->rlink;
 		}
 		if( n->key == key ) // n의 키 값이 인풋받은 키값과 같으면 
 		{	
