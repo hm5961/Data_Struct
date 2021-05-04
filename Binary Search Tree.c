@@ -137,7 +137,12 @@ void preorderTraversal(Node* ptr)
 
 void postorderTraversal(Node* ptr)
 {
-
+	if(ptr)
+	{
+		postorder(ptr->left);
+		postorder(ptr->right);
+		printf("%d", ptr->key);
+	}
 }
 
 
@@ -192,7 +197,6 @@ int deleteLeafNode(Node* head, int key)
 {
 	Node *n;
 	Node *p;
-	Node *q;
 	if ( head->left == NULL )
 	{
 		printf("unavailable. tree is empty.");
@@ -208,70 +212,13 @@ int deleteLeafNode(Node* head, int key)
 			{
 				if( n->left == NULL && n->right == NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
 				{
-					printf("삭제");
 					free(n);
 					return 0;
 				}
-				else if( n->left != NULL && n->right == NULL) // 삭제할 노드 왼쪽에만 자식노드가 있는 경우 
+				else if( n->left != NULL || n->right != NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
 				{
-					if( p->left == n ) // n이 부모노드 왼쪽에 달린 경우 
-					{
-						p->left = n->left; // n의 자식노드를 p의 자식노드로 
-					}
-					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
-					{
-						p->right = n->left; // n의 자식노드를 p의 자식노드로
-					}
-					printf("삭제");
-					free(n);
+					printf("unavailable. this node is not leaf node");
 					return 0;
-				}
-				else if( n->left == NULL && n->right != NULL ) // 삭제할 노드 오른쪽에만 자식노드가 있는 경우
-				{
-					if( p->left == n ) // n이 부모노드 왼쪽에 달린 경우
-					{
-						p->left = n->right; // n의 자식노드를 p의 자식노드로
-					}
-					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
-					{
-						p->right = n->right; // n의 자식노드를 p의 자식노드로
-					}
-					printf("삭제");
-					free(n); // n삭제 후 리턴 
-					return 0;
-				}
-				else if( n->left != NULL && n->right != NULL) // 삭제할 노드 양쪽에 자식노드가 달린 경우 
-				{
-					if( p->left == n ) // n이 부모노드 왼쪽에 달린 경우  
-					{	
-						q = n; // n값 저장 
-						n = n->right; // 오른쪽 자식에서 가장 작은 노드 
-						while( n->left != NULL)
-						{
-							q = n;
-							n = n->left;
-						}
-						q->left = NULL;
-						n->left = p->left->left;
-						n->right = p->left->right;
-						p->left = n;
-						
-					}
-					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
-					{
-						q = n; // n값 저장
-						n = n->right; // 오른쪽 자식에서 가장 작은 노드
-						while( n->left != NULL)  
-						{
-							q = n;
-							n = n->left;
-						}
-						q->left = NULL;
-						n->left = p->right->left;
-						n->right = p->right->right;
-						p->right = n;
-					}
-					
 				}
 			}
 			else if( key < n->key )
