@@ -130,7 +130,7 @@ void inorderTraversal(Node* ptr) // ¿ŞÂÊÀ¸·Î ¹İº¹ Àç±Í ÈÄ Àç±Í ºÒ°¡´É ÀÏ ¶§ Ãâ·Â
 	if(ptr)
 	{
 		inorderTraversal(ptr->left);
-		printf("%d", ptr->key);
+		printf("%d  ", ptr->key);
 		inorderTraversal(ptr->right);
 	}
 }
@@ -139,7 +139,7 @@ void preorderTraversal(Node* ptr) // ¿ì¼± Ãâ·Â ÈÄ ¿ŞÂÊ Àç±Í ÈÄ Ãâ·Â ¿ŞÂÊÀ¸·Î Àç±
 {
 	if(ptr)
 	{
-		printf("%d", ptr->key);
+		printf("%d  ", ptr->key);
 		preorderTraversal(ptr->left);
 		preorderTraversal(ptr->right);
 	}
@@ -151,7 +151,7 @@ void postorderTraversal(Node* ptr) // ¿ŞÂÊÀ¸·Î Àç±Í ÈÄ ¾î´À ÂÊÀ¸·Îµµ Àç±Í ºÒ°¡´É
 	{
 		postorderTraversal(ptr->left);
 		postorderTraversal(ptr->right);
-		printf("%d", ptr->key);
+		printf("%d  ", ptr->key);
 	}
 }
 
