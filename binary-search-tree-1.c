@@ -158,44 +158,44 @@ void postorderTraversal(Node* ptr) // 왼쪽으로 재귀 후 어느 쪽으로도 재귀 불가능
 
 int insert(Node* head, int key)
 {
-	Node *p = (Node*)malloc(sizeof(Node)); // 입력 할 함수 
-	Node *n;
-	p->key = key;
+	Node *p = (Node*)malloc(sizeof(Node)); // 삽입 될 노드  
+	Node *n; // 연산용 노드 
+	p->key = key; // 삽입 될 노드 초기값 지정  
 	p->right = NULL;
 	p->left = NULL;
 	
-	if ( head->left == NULL )
+	if ( head->left == NULL ) // 루트노드가 비었으면 루트노드로 삽입  
 	{
 		head->left = p;
 		return 0;
 	}
 	else
 	{
-		n = head->left;
-		while( 1 )
+		n = head->left; // n 초기 위치 지정  
+		
+		while( 1 ) // 리턴으로만 루프 탈출 
 		{
-			if( p->key < n->key )
+			if( p->key < n->key ) // 인풋받은 키 값보다 현재 위치 노드의 키값이 더 크면  
 			{
-				if( n->left == NULL )
+				if( n->left == NULL ) // n보다 작은 값인 left가 없다면 
 				{
-					n->left = p;
-					printf("%d",head->left->left->key);
+					n->left = p; // n의 left위치에 p 저장 후 리턴 
 					return 0;
 				}
-				n = n->left;
+				n = n->left; // left가 있다면 n 왼쪽으로 이동 
 			}
-			else if( p->key > n->key )
+			else if( p->key > n->key ) // 인풋받은 키 값보다 현재 위치 노드의 키값이 더 작다면
 			{				
-				if( n->right == NULL )
+				if( n->right == NULL ) // n보다 큰 값인 right가 없다면
 				{
-					n->right = p;
+					n->right = p; // n의 right위치에 p 저장 후 리턴 
 					return 0;
 				}
-				n = n->right;
+				n = n->right; // right가 있다면 n 오른쪽으로 이동
 			}
-			else if( p->key == n->key )
+			else if( p->key == n->key ) // 인풋받은 키 값과 현재 위치 노드의 키값이 같다면  
 			{
-				printf("unavailable. same key value is already exists.");
+				printf("unavailable. same key value is already exists."); // 오류메세지 출력 후 삽입 할 노드 초기화 후 리턴 
 				free(p);
 				return 0;
 			}
@@ -205,16 +205,16 @@ int insert(Node* head, int key)
 
 int deleteLeafNode(Node* head, int key)
 {
-	Node *n;
-	Node *p;
-	if ( head->left == NULL )
+	Node *n; // 삭제할 노드  
+	Node *p; // 삭제할 노드의 부모노드 
+	if ( head->left == NULL ) // 루트노드가 없으면 오류메세지 출력 후 리턴 
 	{
 		printf("unavailable. tree is empty.");
 		return 0;
 	}
 	else
 	{
-		n = head->left;
+		n = head->left; // n의 초기 위치 지정 
 		
 		while( 1 ) // 트리 최 하단에서 key값을 못찾을 때 까지 
 		{
@@ -222,7 +222,7 @@ int deleteLeafNode(Node* head, int key)
 			{
 				if( n->left == NULL && n->right == NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
 				{
-					free(n);
+					free(n); 
 					return 0;
 				}
 				else if( n->left != NULL || n->right != NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
@@ -231,19 +231,19 @@ int deleteLeafNode(Node* head, int key)
 					return 0;
 				}
 			}
-			else if( key < n->key )
+			else if( key < n->key ) // key 보다 현재 위치 노드의 key값이 더 크다면  
 			{
-				p = n;
+				p = n; // p에 현재 위치 저장 후 n을 왼쪽으로 이동 
 				n = n->left;
 			}
-			else if( key > n->key )
+			else if( key > n->key ) // key 보다 현재 위치 노드의 key값이 더 작다면 
 			{
-				p = n;
+				p = n; // p에 현재 위치 저장 후 n을 오른쪽으로 이동
 				n = n->right;
 			}
-			else if( n->key != key && n->left == NULL && n->right == NULL)
+			else if( n->key != key && n->left == NULL && n->right == NULL) // 위의 모든 조건을 충족하지 못하는 경우 
 			{
-				printf("unavailable. there is no same value in tree");
+				printf("unavailable. there is no same value in tree"); // 오류메세지 출력 후 리턴 
 				return 0;
 			}
 		}
@@ -273,20 +273,20 @@ Node* searchIterative(Node* head, int key)
 	if( head == NULL ) // 헤드가 비었으면 리턴 null 
 		return NULL;
 		
-	n = head->left;
+	n = head->left; // n의 초기 위치 지정 
 		
 	while( 1 )  
 	{
-		if( n->key == key ) // 같은 값을 찾은 경우 
+		if( n->key == key ) // 같은 값을 찾은 경우 리턴 n 
 			return n;
 			
-		else if( key < n->key )
+		else if( key < n->key ) // 인풋받은 키값보다 n의 키값이 더 큰 경우 n을 왼쪽으로 이동 
 			n = n->left;
 		
-		else if( key > n->key )
+		else if( key > n->key ) // 인풋받은 키값보다 n의 키값이 더 작은 경우 n을 오른쪽으로 이동 
 			n = n->right;
 			
-		else if( n->key != key && n->left == NULL && n->right == NULL)
+		else if( n->key != key && n->left == NULL && n->right == NULL) // 위의 모든 조건을 충족하지 못하는 경우 리턴 null 
 			return NULL;
 	}
 	
