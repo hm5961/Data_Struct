@@ -187,6 +187,7 @@ int deleteLeafNode(Node* head, int key)
 {
 	Node *n = head->left;
 	Node *p;
+	Node *q;
 	
 	if ( n == NULL)
 	{
@@ -206,10 +207,61 @@ int deleteLeafNode(Node* head, int key)
 				}
 				else if( n->left != NULL && n->right == NULL )
 				{
-					if( p->left == n)
+					if( p->left == n )
 					{
-						
+						p->left = n->left;
 					}
+					else( p->right == n )
+					{
+						p->right = n->left;
+					}
+					free(n);
+					return 0;
+				}
+				else if( n->left == NULL && n->right != NULL )
+				{
+					if( p->left == n )
+					{
+						p->left = n->right;
+					}
+					else( p->right == n )
+					{
+						p->right = n->right;
+					}
+					free(n);
+					return 0;
+				}
+				else if( n->left != NULL && n->right != NULL)
+				{
+					if( p->left == n ) 
+					{	
+						q = n;
+						n = n->right;
+						while( n->left == NULL) // 오른쪽 자식에서 가장 작은 노드 
+						{
+							q = n;
+							n = n->left;
+						}
+						q->left = NULL;
+						n->left = p->left->left;
+						n->right = p->left->right;
+						p->left = n;
+					}
+					else( p->right == n )
+					{
+						q = n;
+						n = n->right;
+						while( n->left == NULL) // 오른쪽 자식에서 가장 작은 노드 
+						{
+							q = n;
+							n = n->left;
+						}
+						q->left = NULL;
+						n->left = p->left->left;
+						n->right = p->left->right;
+						p->right = n;
+					}
+					
 				}
 			}
 			else if( p->key < n->key )
