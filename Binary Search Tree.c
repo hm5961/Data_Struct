@@ -164,6 +164,7 @@ int insert(Node* head, int key)
 				if( n->left == NULL )
 				{
 					n->left = p;
+					printf("%d",head->left->left->key);
 					return 0;
 				}
 				n = n->left;
@@ -200,12 +201,14 @@ int deleteLeafNode(Node* head, int key)
 	else
 	{
 		n = head->left;
-		while( n->key != key && n->left == NULL && n->right == NULL ) // 트리 최 하단에서 key값을 못찾은 경우 
+		
+		while( 1 ) // 트리 최 하단에서 key값을 못찾을 때 까지 
 		{
 			if( n->key == key ) // 같은 값을 찾은 경우 
 			{
 				if( n->left == NULL && n->right == NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
 				{
+					printf("삭제");
 					free(n);
 					return 0;
 				}
@@ -219,6 +222,7 @@ int deleteLeafNode(Node* head, int key)
 					{
 						p->right = n->left; // n의 자식노드를 p의 자식노드로
 					}
+					printf("삭제");
 					free(n);
 					return 0;
 				}
@@ -232,6 +236,7 @@ int deleteLeafNode(Node* head, int key)
 					{
 						p->right = n->right; // n의 자식노드를 p의 자식노드로
 					}
+					printf("삭제");
 					free(n); // n삭제 후 리턴 
 					return 0;
 				}
@@ -241,7 +246,7 @@ int deleteLeafNode(Node* head, int key)
 					{	
 						q = n; // n값 저장 
 						n = n->right; // 오른쪽 자식에서 가장 작은 노드 
-						while( n->left == NULL)
+						while( n->left != NULL)
 						{
 							q = n;
 							n = n->left;
@@ -250,12 +255,13 @@ int deleteLeafNode(Node* head, int key)
 						n->left = p->left->left;
 						n->right = p->left->right;
 						p->left = n;
+						
 					}
 					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
 					{
 						q = n; // n값 저장
 						n = n->right; // 오른쪽 자식에서 가장 작은 노드
-						while( n->left == NULL)  
+						while( n->left != NULL)  
 						{
 							q = n;
 							n = n->left;
@@ -268,19 +274,22 @@ int deleteLeafNode(Node* head, int key)
 					
 				}
 			}
-			else if( p->key < n->key )
+			else if( key < n->key )
 			{
 				p = n;
 				n = n->left;
 			}
-			else if( p->key > n->key )
+			else if( key > n->key )
 			{
 				p = n;
 				n = n->right;
 			}
+			else if( n->key != key && n->left == NULL && n->right == NULL)
+			{
+				printf("unavailable. there is no same value in tree");
+				return 0;
+			}
 		}
-		printf("unavailable. there is no same value in tree");
-		return 0;
 	}
 }
 
