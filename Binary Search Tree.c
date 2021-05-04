@@ -127,17 +127,21 @@ int initializeBST(Node** h) {
 
 void inorderTraversal(Node* ptr)
 {
-	int top = -1;
-	
+	if(ptr)
+	{
+		inorderTraversal(ptr->left);
+		printf("%d", ptr->key);
+		inorderTraversal(ptr->right);
+	}
 }
 
 void preorderTraversal(Node* ptr)
 {
 	if(ptr)
 	{
-		printf("%d", ptr->key)
+		printf("%d", ptr->key);
 		preorderTraversal(ptr->left);
-		preorderTraversal(ptr->right);;
+		preorderTraversal(ptr->right);
 	}
 }
 
@@ -248,7 +252,7 @@ int deleteLeafNode(Node* head, int key)
 
 Node* searchRecursive(Node* ptr, int key)
 {
-
+	
 }
 
 Node* searchIterative(Node* head, int key)
@@ -258,7 +262,6 @@ Node* searchIterative(Node* head, int key)
 
 int freeBST(Node* head)
 {
-
 }
 
 
