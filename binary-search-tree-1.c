@@ -11,13 +11,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+typedef struct node { // 트리로 사용 할 구조체 노드 
 	int key;
 	struct node *left;
 	struct node *right;
 } Node;
 
-int initializeBST(Node** h);
+int initializeBST(Node** h); // 조건에 따라 head를 초기화하고 인풋받은 h를 동적 할당 후 기본 값을 지정하는 함수 
 
 /* functions that you have to implement */
 void inorderTraversal(Node* ptr);	  /* recursive inorder traversal */
@@ -34,8 +34,8 @@ int freeBST(Node* head); /* free all memories allocated to the tree */
 
 int main()
 {
-	char command;
-	int key;
+	char command; // 사용자로 부터 메뉴를 입력받을 문자형 변수  
+	int key; // 입력받을 키값  
 	Node* head = NULL;
 	Node* ptr = NULL;	/* temp */
 
@@ -75,7 +75,7 @@ int main()
 			printf("Your Key = ");
 			scanf("%d", &key);
 			ptr = searchIterative(head, key);
-			if(ptr != NULL)
+			if(ptr != NULL) 
 				printf("\n node [%d] found at %p\n", ptr->key, ptr);
 			else
 				printf("\n Cannot find the node [%d]\n", key);
@@ -125,7 +125,7 @@ int initializeBST(Node** h) {
 
 
 
-void inorderTraversal(Node* ptr)
+void inorderTraversal(Node* ptr) // 왼쪽으로 반복 재귀 후 재귀 불가능 일 때 출력 후 오른쪽으로 재귀  
 {
 	if(ptr)
 	{
@@ -135,7 +135,7 @@ void inorderTraversal(Node* ptr)
 	}
 }
 
-void preorderTraversal(Node* ptr)
+void preorderTraversal(Node* ptr) // 우선 출력 후 왼쪽 재귀 후 출력 왼쪽으로 재귀 불가능 일때 오른쪽으로 재귀 
 {
 	if(ptr)
 	{
@@ -145,7 +145,7 @@ void preorderTraversal(Node* ptr)
 	}
 }
 
-void postorderTraversal(Node* ptr)
+void postorderTraversal(Node* ptr) // 왼쪽으로 재귀 후 어느 쪽으로도 재귀 불가능 일 때 출력 
 {
 	if(ptr)
 	{
@@ -158,7 +158,7 @@ void postorderTraversal(Node* ptr)
 
 int insert(Node* head, int key)
 {
-	Node *p = (Node*)malloc(sizeof(Node));
+	Node *p = (Node*)malloc(sizeof(Node)); // 입력 할 함수 
 	Node *n;
 	p->key = key;
 	p->right = NULL;
@@ -254,7 +254,7 @@ Node* searchRecursive(Node* ptr, int key)
 {
 	if( ptr == NULL ) // 헤드가 비었으면 리턴 null 
 		return NULL;
-	
+		
 	else if( ptr->key == key ) // key값을 가진 노드가 있으면 해당 노드 리턴 
 		return ptr;
 	
@@ -270,6 +270,9 @@ Node* searchIterative(Node* head, int key)
 {
 	Node *n;
 	
+	if( head == NULL ) // 헤드가 비었으면 리턴 null 
+		return NULL;
+		
 	n = head->left;
 		
 	while( 1 )  
@@ -284,20 +287,20 @@ Node* searchIterative(Node* head, int key)
 			n = n->right;
 			
 		else if( n->key != key && n->left == NULL && n->right == NULL)
-		{
 			return NULL;
-		}
 	}
 	
 }
 
 int freeBST(Node* head)
 {
-	if( head == NULL )
-		return 0;
-	else
+	if( head != NULL ) // 헤드가 null이 아닐 경우 
 	{
-		
+		if( head->left != NULL ) // 헤드의 left가 null이 아니면 헤드 left 재귀(탐색 후 동적 할당 해제) 
+			freeBST( head->left );
+		if ( head != head->right ) // 헤드의 right가 스스로를 가르키는 head노드가 아니라면 right 재귀(탐색 후 동적 할당 해제) 
+			freeBST( head->right );
+		free( head ); // 탐색한 노드 동적 할당 해제 
 	}
 }
 
