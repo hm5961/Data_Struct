@@ -252,16 +252,53 @@ int deleteLeafNode(Node* head, int key)
 
 Node* searchRecursive(Node* ptr, int key)
 {
+	if( ptr == NULL ) // 헤드가 비었으면 리턴 null 
+		return NULL;
 	
+	else if( ptr->key == key ) // key값을 가진 노드가 있으면 해당 노드 리턴 
+		return ptr;
+	
+	else if( key < ptr->key )  // 인풋된 key 값보다 노드의 key값이 크면 노드 왼쪽으로 이동 후 재귀( 더 작은 key값을 가진 노드 탐색) 
+		return searchRecursive(ptr->left, key);
+		
+	else if( key > ptr->key ) // 인풋된 key 값보다 노드의 key값이 작으면 노드 오른쪽으로 이동 후 재귀( 더 큰 key값을 가진 노드 탐색) 
+		return searchRecursive(ptr->right, key);
+		
 }
 
 Node* searchIterative(Node* head, int key)
 {
-
+	Node *n;
+	
+	n = head->left;
+		
+	while( 1 )  
+	{
+		if( n->key == key ) // 같은 값을 찾은 경우 
+			return n;
+			
+		else if( key < n->key )
+			n = n->left;
+		
+		else if( key > n->key )
+			n = n->right;
+			
+		else if( n->key != key && n->left == NULL && n->right == NULL)
+		{
+			return NULL;
+		}
+	}
+	
 }
 
 int freeBST(Node* head)
 {
+	if( head == NULL )
+		return 0;
+	else
+	{
+		
+	}
 }
 
 
