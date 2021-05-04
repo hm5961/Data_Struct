@@ -144,28 +144,26 @@ void postorderTraversal(Node* ptr)
 int insert(Node* head, int key)
 {
 	Node *p = (Node*)malloc(sizeof(Node));
-	Node *n = head->left;
+	Node *n;
 	p->key = key;
+	p->right = NULL;
+	p->left = NULL;
 	
-	if ( n == NULL)
+	if ( head->left == NULL )
 	{
-		p = head->left;
+		head->left = p;
 		return 0;
 	}
 	else
 	{
-		if( p->key == n->key )
-		{
-			printf("unavailable. same key value is already exists.");
-			return 0;
-		}
-		while( 1 ) //(n->left == NULL && n->right == NULL) || (n->left == NULL && n->right == NULL) ) 
+		n = head->left;
+		while( 1 )
 		{
 			if( p->key < n->key )
 			{
 				if( n->left == NULL )
 				{
-					p = n->left;
+					n->left = p;
 					return 0;
 				}
 				n = n->left;
@@ -174,10 +172,16 @@ int insert(Node* head, int key)
 			{				
 				if( n->right == NULL )
 				{
-					p = n->right;
+					n->right = p;
 					return 0;
 				}
 				n = n->right;
+			}
+			else if( p->key == n->key )
+			{
+				printf("unavailable. same key value is already exists.");
+				free(p);
+				return 0;
 			}
 		}
 	}
@@ -185,59 +189,59 @@ int insert(Node* head, int key)
 
 int deleteLeafNode(Node* head, int key)
 {
-	Node *n = head->left;
+	Node *n;
 	Node *p;
 	Node *q;
-	
-	if ( n == NULL)
+	if ( head->left == NULL )
 	{
 		printf("unavailable. tree is empty.");
 		return 0;
 	}
 	else
 	{
-		while(1)
+		n = head->left;
+		while( n->key != key && n->left == NULL && n->right == NULL ) // 트리 최 하단에서 key값을 못찾은 경우 
 		{
-			if( n->key == key )
+			if( n->key == key ) // 같은 값을 찾은 경우 
 			{
-				if( n->left == NULL && n->right == NULL)
+				if( n->left == NULL && n->right == NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
 				{
 					free(n);
 					return 0;
 				}
-				else if( n->left != NULL && n->right == NULL )
+				else if( n->left != NULL && n->right == NULL) // 삭제할 노드 왼쪽에만 자식노드가 있는 경우 
 				{
-					if( p->left == n )
+					if( p->left == n ) // n이 부모노드 왼쪽에 달린 경우 
 					{
-						p->left = n->left;
+						p->left = n->left; // n의 자식노드를 p의 자식노드로 
 					}
-					else( p->right == n )
+					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
 					{
-						p->right = n->left;
+						p->right = n->left; // n의 자식노드를 p의 자식노드로
 					}
 					free(n);
 					return 0;
 				}
-				else if( n->left == NULL && n->right != NULL )
+				else if( n->left == NULL && n->right != NULL ) // 삭제할 노드 오른쪽에만 자식노드가 있는 경우
 				{
-					if( p->left == n )
+					if( p->left == n ) // n이 부모노드 왼쪽에 달린 경우
 					{
-						p->left = n->right;
+						p->left = n->right; // n의 자식노드를 p의 자식노드로
 					}
-					else( p->right == n )
+					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
 					{
-						p->right = n->right;
+						p->right = n->right; // n의 자식노드를 p의 자식노드로
 					}
-					free(n);
+					free(n); // n삭제 후 리턴 
 					return 0;
 				}
-				else if( n->left != NULL && n->right != NULL)
+				else if( n->left != NULL && n->right != NULL) // 삭제할 노드 양쪽에 자식노드가 달린 경우 
 				{
-					if( p->left == n ) 
+					if( p->left == n ) // n이 부모노드 왼쪽에 달린 경우  
 					{	
-						q = n;
-						n = n->right;
-						while( n->left == NULL) // 오른쪽 자식에서 가장 작은 노드 
+						q = n; // n값 저장 
+						n = n->right; // 오른쪽 자식에서 가장 작은 노드 
+						while( n->left == NULL)
 						{
 							q = n;
 							n = n->left;
@@ -247,18 +251,18 @@ int deleteLeafNode(Node* head, int key)
 						n->right = p->left->right;
 						p->left = n;
 					}
-					else( p->right == n )
+					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
 					{
-						q = n;
-						n = n->right;
-						while( n->left == NULL) // 오른쪽 자식에서 가장 작은 노드 
+						q = n; // n값 저장
+						n = n->right; // 오른쪽 자식에서 가장 작은 노드
+						while( n->left == NULL)  
 						{
 							q = n;
 							n = n->left;
 						}
 						q->left = NULL;
-						n->left = p->left->left;
-						n->right = p->left->right;
+						n->left = p->right->left;
+						n->right = p->right->right;
 						p->right = n;
 					}
 					
