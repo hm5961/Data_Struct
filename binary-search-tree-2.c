@@ -50,9 +50,6 @@ int freeBST(Node* head); /* free all memories allocated to the tree */
 /* you may add your own defined functions if necessary */
 
 
-void printStack();
-
-
 
 int main()
 {
@@ -103,10 +100,6 @@ int main()
 			levelOrder(head->left);
 			break;
 
-		case 'p': case 'P':
-			printStack();
-			break;
-
 		default:
 			printf("\n       >>>>>   Concentration!!   <<<<<     \n");
 			break;
@@ -153,15 +146,15 @@ void recursiveInorder(Node* ptr)
 void iterativeInorder(Node* node)
 {
 	int top = -1;
-	Node stack[MAX_STACK_SIZE];
+	Node* stack[MAX_STACK_SIZE];
 	for(;;)
 	{
-		for(; node; node=node->left)
+		for(; node; node = node->left)
 			push(node);
 		node = pop();
 		if(!node)
 			break;
-		printf("%d", node->key);
+		printf("[%d]",node->key);
 		node = node->right;
 	}
 }
@@ -255,7 +248,15 @@ int deleteNode(Node* head, int key)
 			{
 				if( n->left == NULL && n->right == NULL) // 삭제할 노드에 자식노드가 없는 경우 노드만 삭제 
 				{
-					printf("삭제");
+					if(p->left == n)
+					{
+						p->left = NULL;
+					}
+					else if(p->right == n)
+					{
+						p->right = NULL;
+					}
+					printf("삭제 자식없음");
 					free(n);
 					return 0;
 				}
@@ -269,7 +270,7 @@ int deleteNode(Node* head, int key)
 					{
 						p->right = n->left; // n의 자식노드를 p의 자식노드로
 					}
-					printf("삭제");
+					printf("삭제 왼쪽 자식");
 					free(n);
 					return 0;
 				}
@@ -283,7 +284,7 @@ int deleteNode(Node* head, int key)
 					{
 						p->right = n->right; // n의 자식노드를 p의 자식노드로
 					}
-					printf("삭제");
+					printf("삭제 오른쪽 자식");
 					free(n); // n삭제 후 리턴 
 					return 0;
 				}
@@ -298,11 +299,26 @@ int deleteNode(Node* head, int key)
 							q = n;
 							n = n->left;
 						}
-						q->left = NULL;
-						n->left = p->left->left;
-						n->right = p->left->right;
-						p->left = n;
-						return 0;
+						if(q->left == n)
+						{
+							q->left = NULL;
+							n->left = p->left->left;
+							n->right = p->left->right;
+							p->left = n;
+							q = q->left;
+							free(q);
+							p->left = n;
+							return 0;
+						}
+						else if(q->right == n)
+						{
+							q->right = NULL;
+							n->left = q->left;
+							q->left = NULL;
+							p->left = n;
+							free(q);
+							return 0;
+						}
 					}
 					else if( p->right == n ) // n이 부모노드 오른쪽에 달린 경우 
 					{
@@ -313,11 +329,25 @@ int deleteNode(Node* head, int key)
 							q = n;
 							n = n->left;
 						}
-						q->left = NULL;
-						n->left = p->right->left;
-						n->right = p->right->right;
-						p->right = n;
-						return 0;
+						if(q->left == n)
+						{
+							q->left = NULL;
+							n->left = p->right->left;
+							n->right = p->right->right;
+							q = p->right;
+							free(q);
+							p->right = n;
+							return 0;
+						}
+						else if(q->right == n)
+						{
+							q->right = NULL;
+							n->left = q->left;
+							q->left = NULL;
+							p->right = n;
+							free(q);
+							return 0; 
+						}
 					}
 				}
 			}
@@ -371,27 +401,45 @@ int freeBST(Node* head)
 
 Node* pop()
 {
-	
+	Node* node = NULL; // 노드 위치 리턴 용 선언 
+	if( top == -1 )
+	{
+		printf("unavailable. stack is empty.");
+		return 0;
+	}
+	else
+	{
+		printf("stack[top] = %d\t top = %d\n",stack[top],top);
+		node = stack[top]; 
+		top--;
+		return node;
+	}
 }
 
 void push(Node* aNode)
 {
+	if( top == MAX_STACK_SIZE -1 )
+	{
+		printf("unavailable. stack is full.");
+	}
+	else
+	{	
+		top++;
+		stack[top] = aNode;
+	}
+	printf("stack[top] = %d\t top = %d\n",stack[top],top);
 }
 
 
 
 Node* deQueue()
 {
+	
 }
 
 void enQueue(Node* aNode)
 {
 	
-}
-
-
-void printStack()
-{
 }
 
 
