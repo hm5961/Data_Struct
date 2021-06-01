@@ -88,23 +88,22 @@ int main()
 		case 'k': case 'K':
 			printf("Quick Sort: \n");
 			printf("----------------------------------------------------------------\n");
-			printArray(array);
-			quickSort(array, MAX_ARRAY_SIZE);
+			printArray(array); // 기존상태 배열 출력 
+			quickSort(array, MAX_ARRAY_SIZE); // quicksort 함수 실행 
 			printf("----------------------------------------------------------------\n");
-			printArray(array);
-
+			printArray(array); //quicksort된 배열 출력 
 			break;
 
 		case 'h': case 'H':
 			printf("Hashing: \n");
 			printf("----------------------------------------------------------------\n");
-			printArray(array);
-			hashing(array, &hashtable);
-			printArray(hashtable);
+			printArray(array); // 기존 상태 배열 출력 
+			hashing(array, &hashtable); // hashing 함수 실행 
+			printArray(hashtable); // hashing된 배열 출력 
 			break;
 
 		case 'e': case 'E':
-			printf("Your Key = ");
+			printf("Your Key = "); // 사용자로부터 정수 인풋받아서 
 			scanf("%d", &key);
 			printArray(hashtable);
 			index = search(hashtable, key);
@@ -151,15 +150,15 @@ int freeArray(int *a)
 
 void printArray(int *a)
 {
-	if (a == NULL) {
+	if (a == NULL) { // a가 NULL이면 오류메세지 출력 후 리턴 
 		printf("nothing to print.\n");
 		return;
 	}
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
-		printf("a[%02d] ", i);
+	for(int i = 0; i < MAX_ARRAY_SIZE; i++) // MAX_ARRAY_SIZE만큼 루프하면서 
+		printf("a[%02d] ", i); // a[두자리 정수형] 출력 
 	printf("\n");
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
-		printf("%5d ", a[i]);
+	for(int i = 0; i < MAX_ARRAY_SIZE; i++) // // MAX_ARRAY_SIZE만큼 루프하면서
+		printf("%5d ", a[i]); // 5만큼 공백가진 a[]출력 
 	printf("\n");
 }
 
@@ -173,26 +172,26 @@ int selectionSort(int *a)
 	printf("Selection Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
-	printArray(a);
-
-	for (i = 0; i < MAX_ARRAY_SIZE; i++)
+	printArray(a); // 기존 배열 출력 
+	// 루프를 돌려 최솟값을 찾고 배열에 앞으로 가져다 놓는것을 반복 
+	for (i = 0; i < MAX_ARRAY_SIZE; i++) // 외부 루프에서 저장한 값 / 위치로 
 	{
 		minindex = i;
 		min = a[i];
-		for(j = i+1; j < MAX_ARRAY_SIZE; j++)
+		for(j = i+1; j < MAX_ARRAY_SIZE; j++) // 내부 루프에서 탐색해서 
 		{
-			if (min > a[j])
+			if (min > a[j]) // 더 작은 값이 있다면 교체 
 			{
 				min = a[j];
 				minindex = j;
 			}
 		}
-		a[minindex] = a[i];
+		a[minindex] = a[i]; // 교체된 값으로 변경 
 		a[i] = min;
 	}
 
 	printf("----------------------------------------------------------------\n");
-	printArray(a);
+	printArray(a); // 기존 배열 출력 
 	return 0;
 }
 
@@ -203,7 +202,7 @@ int insertionSort(int *a)
 	printf("Insertion Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
-	printArray(a);
+	printArray(a); 
 
 	for(i = 1; i < MAX_ARRAY_SIZE; i++)
 	{
