@@ -13,7 +13,10 @@
 #include <time.h>
 
 #define MAX_ARRAY_SIZE			13	/* prime number */
+// 배열크기 상수화 
 #define MAX_HASH_TABLE_SIZE 	MAX_ARRAY_SIZE
+// 해시테이블 상수화
+
 
 /* 필요에 따라 함수 추가 가능 */
 int initialize(int **a);
@@ -40,15 +43,16 @@ int search(int *ht, int key);
 
 int main()
 {
-	char command;
-	int *array = NULL;
-	int *hashtable = NULL;
-	int key = -1;
+	char command; // 사용자로부터 메뉴 인풋받을 변수
+	int *array = NULL; // 배열로 사용할 포인터 변수
+	int *hashtable = NULL; // 해시테이블로 사용할 포인터 변수
+	int key = -1; // 키
 	int index = -1;
 
 	srand(time(NULL));
 
 	do{
+		printf("[----- [김현민] [2018038036] -----]\n");
 		printf("----------------------------------------------------------------\n");
 		printf("                        Sorting & Hashing                       \n");
 		printf("----------------------------------------------------------------\n");
@@ -60,7 +64,7 @@ int main()
 		printf("----------------------------------------------------------------\n");
 
 		printf("Command = ");
-		scanf(" %c", &command);
+		scanf(" %c", &command); // 사용자로부터 메뉴 인풋 
 
 		switch(command) {
 		case 'z': case 'Z':
@@ -122,25 +126,25 @@ int main()
 
 int initialize(int** a)
 {
-	int *temp = NULL;
+	int *temp = NULL; // 동적할당 후 배열로 사용하기위해 초기화 
 
 	/* array가 NULL인 경우 메모리 할당 */
 	if(*a == NULL) {
-		temp = (int*)malloc(sizeof(int) * MAX_ARRAY_SIZE);
+		temp = (int*)malloc(sizeof(int) * MAX_ARRAY_SIZE); // 동적할당 
 		*a = temp;  /* 할당된 메모리의 주소를 복사 --> main에서 배열을 control 할수 있도록 함*/
 	} else
-		temp = *a;
+		temp = *a; // 인풋받은 a가 초기화 된 값이 아니면 temp에 저장 
 
 	/* 랜덤값을 배열의 값으로 저장 */
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
-		temp[i] = rand() % MAX_ARRAY_SIZE;
+	for(int i = 0; i < MAX_ARRAY_SIZE; i++) // MAX_ARRAY_SIZE만큼 반복 
+		temp[i] = rand() % MAX_ARRAY_SIZE; // i번째 temp에  0 ~ MAX_ARRAY_SIZE -1 사이의 값 저장
 
 	return 0;
 }
 
 int freeArray(int *a)
 {
-	if(a != NULL)
+	if(a != NULL) // a가 NULL이 아니면 초기화
 		free(a);
 	return 0;
 }
